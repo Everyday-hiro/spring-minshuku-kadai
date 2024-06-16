@@ -1,5 +1,7 @@
 package com.example.samuraitravel.controller;
 
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -12,17 +14,23 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.samuraitravel.entity.House;
+import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.form.ReservationInputForm;
 import com.example.samuraitravel.repository.HouseRepository;
+import com.example.samuraitravel.repository.ReviewRepository;
 
 @Controller
 @RequestMapping("/houses")
 public class HouseController {
 
+	@Autowired
 	private final HouseRepository houseRepository;
+	private final ReviewRepository reviewRepository;
+	int houseId = 1;
 	
-	public HouseController(HouseRepository houseRepository) {
+	public HouseController(HouseRepository houseRepository, ReviewRepository reviewRepository) {
 		this.houseRepository = houseRepository;
+		this.reviewRepository = reviewRepository;
 	}
 	
 	@GetMapping
@@ -71,11 +79,14 @@ public class HouseController {
 	}
 	
 	@GetMapping("/{id}")
-	public String show(@PathVariable(name = "id") Integer id, Model model) {
+	public String show(@PathVariable(name = "id") Integer id, Model model,@PageableDefault(page = 0, size = 6, sort = "writing", direction = Direction.ASC) Pageable pageable) {
 		House house = houseRepository.getReferenceById(id);
+		Page<Review> reviewPage = reviewRepository.findByHouseId(id, pageable);
 		
 		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
+		
+		model.addAttribute("reviewPage", reviewPage);
 		
 		return "houses/show";
 	}
