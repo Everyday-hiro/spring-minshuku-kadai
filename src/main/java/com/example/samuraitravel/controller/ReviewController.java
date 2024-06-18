@@ -40,7 +40,9 @@ public class ReviewController {
 	@GetMapping("/{id}")
 	public String review(@PathVariable(name = "id") Integer id, Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
 		Page<Review> reviewPage = reviewRepository.findByHouseId(id, pageable);
+		House house = houseRepository.getReferenceById(id);
 
+		model.addAttribute("house", house);
 		model.addAttribute("reviewPage", reviewPage); 
 		
 		return "review/review"; 
@@ -49,8 +51,10 @@ public class ReviewController {
 	@GetMapping("/registerform/{id}")
 	public String register(@PathVariable(name = "id") Integer id, Model model) {
 		House house = houseRepository.getReferenceById(id);
+		Review review = new Review();
 		
 		model.addAttribute("house", house);
+		model.addAttribute("review", review);
 		model.addAttribute("reviewRegisterForm", new ReviewRegisterForm());
 		
 		return "review/reviewRegister";
@@ -66,7 +70,7 @@ public class ReviewController {
 		reviewService.create(reviewRegisterForm);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを登録しました。");
 		
-		return "redirect:/houses/show";
+		return "redirect:/show";
 	}
 	
 	@PostMapping("/{id}/edit")
