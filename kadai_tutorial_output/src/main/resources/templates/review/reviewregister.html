@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="https://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ja">
+<html xmlns:th="https://www.thymeleaf.org"  xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 	<head>
 		<div th:replace="~{fragment :: meta}"></div>
 		
@@ -34,31 +34,18 @@
 
 							<h1 class="mb-4 text-center" th:text="${house.getName()} + ' のレビュー投稿'"></h1>
 							
-<!--							formy要素の説明-->
-<!--							・form要素の属性にpostを指定：get/postを指定できる-->
-<!--								HTML GET：単純にページを表示する場合など、サーバーから情報を取得するためにs￥使う-->
-<!--								HTML POST：フォーム入力内容を送信して、データの作成や更新を行う場合など、サーバー上のデータを変更するために使う-->
-<!--							・form要素にth:object属性：コントローラーから受け取ったインスタンスを指定する-->
-<!--							・th:action属性：Contorollerのどのメソッドに対してデータを送るかを指定(Contoroller側では『@PostMapping("/create")』で紐づけしている	)-->
-<!--								インスタンスを受け取ることで、入力項目とフォームクラスのフィールドを関連付けできるようになる-->
-<!--							・form要素のenctype属性：フォーム入力内容を送信するためのエンコードタイプを指定-->
-							<form method="post" th:action="@{/templates/reviews/create}" th:object="${reviewRegisterForm}" class="w-100">
-<!--							※row: Bootstrapのグリッドシステムを使用して、水平方向に要素を配置するためのクラス-->
 
-<!--							■Starの入力-->
+							<form method="post" th:action="@{/review/{houseId}/create(houseId = ${house.id})}" th:object="${review}" class="w-100">
+
+
 								<div class="form-group row mb-3">
 									<div class="col-md-2">
 										<label for="name" class="col-form-label text-md-left fw-bold">評価</label>
 									</div>
-<!--								※Bootstrapのグリッドシステムを使用：col-md-8 は、画面サイズが中サイズ以上の場合に、この要素が8つのカラム幅を占める-->
+
 									<div class="col-md-8">
 										
-<!--									th:if属性の条件式に#fields.hasErrorsを使うことで、そのフィールドにエラーが発生した場合にのみその要素を表示できる-->
-<!--									th:errors属性を加え、クラスで設定したメッセージを表示できる-->
 										<div th:if="${#fields.hasErrors('star')}" class="text-danger small mb-2" th:errors="*{star}"></div>
-										
-<!--									th:field属性　各入力項目とフォームクラスのフィールドを関連付けさせる-->
-<!--										th:fieldを設定するとid属性も同じ値になる-->
 										
 										<select class="form-control form-select" name="star" autofocus>
 											<option value=" hidden">選択してください</option> 

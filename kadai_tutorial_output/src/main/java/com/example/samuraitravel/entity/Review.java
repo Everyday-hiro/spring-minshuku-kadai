@@ -30,8 +30,8 @@ public class Review {
 	@Column(name = "explanation")
 	private String explanation;
 	
-	@Column(name = "user_id")
-	private Integer userId;
+	@Column(name = "user_id", insertable = false, updatable = false)
+    private Integer userId;
 	
 	@Column(name = "house_id")
 	private Integer houseId;
