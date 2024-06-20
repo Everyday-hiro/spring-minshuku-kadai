@@ -36,16 +36,9 @@
 							
 
 							<form method="post" th:action="@{/review/{houseId}/create(houseId = ${house.id})}" th:object="${review}" class="w-100">
-
-
-								<div class="form-group row mb-3">
-									<div class="col-md-2">
-										<label for="name" class="col-form-label text-md-left fw-bold">名前</label> 
-									</div>
-									<div class="col-md-8">
-										<div th:if="${#fields.hasErrors('name')}" class="text-danger small mb-2" th:errors="*{name}"></div>
-										<input type="text" class="form-control" th:field="*{name}" autofocus>
-									</div>
+								
+								<div class="col-form-label text-md-left fw-bold">
+									<span th:text="${#authentication.principal.user.name}"></span>
 								</div>
 								
 								<div class="form-group row mb-3">
