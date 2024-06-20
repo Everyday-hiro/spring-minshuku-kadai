@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -21,6 +22,7 @@ import com.example.samuraitravel.form.ReviewEditForm;
 import com.example.samuraitravel.form.ReviewRegisterForm;
 import com.example.samuraitravel.repository.HouseRepository;
 import com.example.samuraitravel.repository.ReviewRepository;
+import com.example.samuraitravel.security.UserDetailsImpl;
 import com.example.samuraitravel.service.ReviewService;
 
 @Controller
@@ -61,16 +63,16 @@ public class ReviewController {
 	}
 	
 	@PostMapping("{id}/create")
-	public String create(@ModelAttribute @Validated ReviewRegisterForm reviewRegisterForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public String create(@PathVariable(name = "id") Integer id, @ModelAttribute @Validated ReviewRegisterForm reviewRegisterForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		if(bindingResult.hasErrors()) {
 			
 			return "review/reviewRegister";
 		}
 		
-		reviewService.create(reviewRegisterForm);
+		reviewService.create(reviewRegisterForm, userDetailsImpl);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを登録しました。");
 		
-		return "redirect:/show";
+		return "redirect:/houses/show";
 	}
 	
 	@PostMapping("/{id}/edit")
