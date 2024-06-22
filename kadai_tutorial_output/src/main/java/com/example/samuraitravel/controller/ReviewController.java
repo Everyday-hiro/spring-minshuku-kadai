@@ -62,10 +62,17 @@ public class ReviewController {
 		return "review/reviewRegister";
 	}
 	
-	@PostMapping("{id}/create")
-	public String create(@PathVariable(name = "id") Integer id, @ModelAttribute @Validated ReviewRegisterForm reviewRegisterForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+	@PostMapping("/{id}/create")
+	public String create(@PathVariable(name = "id") Integer id, @ModelAttribute @Validated ReviewRegisterForm reviewRegisterForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+		House house = houseRepository.getReferenceById(id);
+		Review review = new Review();
+		
+		model.addAttribute("house", house);
+		model.addAttribute("review", review);
+		
 		if(bindingResult.hasErrors()) {
 			
+			model.addAttribute("errorMessage", "投稿内容に不備があります。");
 			return "review/reviewRegister";
 		}
 		
