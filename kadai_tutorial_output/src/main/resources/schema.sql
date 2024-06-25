@@ -63,7 +63,6 @@ CREATE TABLE IF NOT EXISTS review(
      explanation TEXT NOT NULL,
      user_id INT,
      house_id INT,
-     writing DATE NOT NULL,
      created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
      updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
      FOREIGN KEY (house_id) REFERENCES houses(id),

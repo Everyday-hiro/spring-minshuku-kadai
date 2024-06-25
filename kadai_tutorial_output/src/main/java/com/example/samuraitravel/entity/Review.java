@@ -1,7 +1,6 @@
 package com.example.samuraitravel.entity;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -35,9 +34,6 @@ public class Review {
 	
 	@Column(name = "house_id")
 	private Integer houseId;
-	
-	@Column(name = "writing")
-	private LocalDate writing;
 	
 	@Column(name = "created_at", insertable = false, updatable = false)
 	private Timestamp createdAt;

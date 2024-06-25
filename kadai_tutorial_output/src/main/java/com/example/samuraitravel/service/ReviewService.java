@@ -23,13 +23,13 @@ public class ReviewService {
 	}
 	
 	@Transactional
-	public void create(ReviewRegisterForm reviewRegisterForm, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+	public void create(Integer id, ReviewRegisterForm reviewRegisterForm, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		Review review = new Review();
 		User user = userDetailsImpl.getUser();
 		House house = new House();
 		
 		house.setName(house.getName());
-		user.setName(userDetailsImpl.getUsername());
+		review.setName(user.getName());
 		review.setStar(reviewRegisterForm.getStar());
 		review.setExplanation(reviewRegisterForm.getExplanation());
 		
@@ -37,9 +37,11 @@ public class ReviewService {
 	}
 	
 	@Transactional
-	public void update(ReviewEditForm reviewEditForm) {
+	public void update(ReviewEditForm reviewEditForm,  @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		Review review = reviewRepository.getReferenceById(reviewEditForm.getId());
-		
+		User user = userDetailsImpl.getUser();
+				
+		review.setName(userDetailsImpl.getUsername());
 		review.setStar(reviewEditForm.getStar());
 		review.setExplanation(reviewEditForm.getExplanation());
 		

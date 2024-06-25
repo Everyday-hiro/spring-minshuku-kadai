@@ -71,37 +71,40 @@ public class ReviewController {
 		model.addAttribute("review", review);
 		
 		if(bindingResult.hasErrors()) {
-			
+
 			model.addAttribute("errorMessage", "投稿内容に不備があります。");
 			return "review/reviewRegister";
 		}
 		
-		reviewService.create(reviewRegisterForm, userDetailsImpl);
+		reviewService.create(id, reviewRegisterForm, userDetailsImpl);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを登録しました。");
 		
-		return "redirect:/houses/show";
+		return "redirect:/houses/{id}";
 	}
 	
-	@PostMapping("/{id}/edit")
+	@GetMapping("/{id}/edit")
 	public String edit(@PathVariable(name = "id") Integer id, Model model) {
 		Review review = reviewRepository.getReferenceById(id);
+		House house = houseRepository.getReferenceById(id);
 		ReviewEditForm reviewEditForm = new ReviewEditForm(review.getId(),review.getStar(), review.getExplanation());
 				
-				model.addAttribute("reviewEditForm", reviewEditForm);
+		model.addAttribute("house", house);		
+		model.addAttribute("reviewEditForm", reviewEditForm);
 		
 		return "review/edit";
 	}
 	
 	@PostMapping("/{id}/update")
-	public String update(@ModelAttribute @Validated ReviewEditForm reviewEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+	public String update(@ModelAttribute @Validated ReviewEditForm reviewEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		if(bindingResult.hasErrors()) {
+		
 			return "review/edit";
 		}
 		
-		reviewService.update(reviewEditForm);
+		reviewService.update(reviewEditForm, userDetailsImpl);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューの内容を編集しました。");
 		
-		return "redirect:/houses/show";
+		return "redirect:/templates/houses/show";
 	}
 	
 	@PostMapping("/{id}/delete")

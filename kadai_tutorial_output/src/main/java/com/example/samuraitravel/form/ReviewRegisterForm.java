@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class ReviewRegisterForm {
 	
-	@NotBlank
-	private String name;
 	
 	@Max(value = 5)
 	private Integer star;
