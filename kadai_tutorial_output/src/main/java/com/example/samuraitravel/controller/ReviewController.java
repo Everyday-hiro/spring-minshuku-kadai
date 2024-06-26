@@ -40,7 +40,7 @@ public class ReviewController {
 	
 	//レビュー一覧への遷移
 	@GetMapping("/{id}")
-	public String review(@PathVariable(name = "id") Integer id, Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
+	public String review(@PathVariable(name = "id") Integer id, Model model, @PageableDefault(page = 0, size = 10, sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
 		Page<Review> reviewPage = reviewRepository.findByHouseId(id, pageable);
 		House house = houseRepository.getReferenceById(id);
 

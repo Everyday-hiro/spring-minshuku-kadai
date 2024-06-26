@@ -79,7 +79,7 @@ public class HouseController {
 	}
 	
 	@GetMapping("/{id}")
-	public String show(@PathVariable(name = "id") Integer id, Model model,@PageableDefault(page = 0, size = 6, sort = "createdAt", direction = Direction.ASC) Pageable pageable) {
+	public String show(@PathVariable(name = "id") Integer id, Model model,@PageableDefault(page = 0, size = 6, sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
 		House house = houseRepository.getReferenceById(id);
 		Page<Review> reviewPage = reviewRepository.findByHouseId(id, pageable);
 		

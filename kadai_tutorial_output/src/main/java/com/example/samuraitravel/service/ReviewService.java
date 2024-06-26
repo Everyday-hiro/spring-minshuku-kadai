@@ -4,7 +4,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
 import com.example.samuraitravel.entity.User;
 import com.example.samuraitravel.form.ReviewEditForm;
@@ -26,12 +25,13 @@ public class ReviewService {
 	public void create(Integer id, ReviewRegisterForm reviewRegisterForm, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		Review review = new Review();
 		User user = userDetailsImpl.getUser();
-		House house = new House();
 		
-		house.setName(house.getName());
+		
 		review.setName(user.getName());
 		review.setStar(reviewRegisterForm.getStar());
 		review.setExplanation(reviewRegisterForm.getExplanation());
+		review.setHouseId(id);
+		review.setUserId(user.getId());
 		
 		reviewRepository.save(review);
 	}
