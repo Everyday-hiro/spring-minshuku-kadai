@@ -161,6 +161,10 @@
 												   レビューがまだ投稿されていません
 												</div>
 												
+												<div th:if="${successMessage}" class="alert alert-info">
+													<span th:text="${successMessage}"></span>
+												</div>
+												
 												<div class="container p-3 my-container" th:unless="${reviewPage.isEmpty()}">
 													<div class="row">
 														<div class="col-6 pb-3" th:each="review : ${reviewPage}">
