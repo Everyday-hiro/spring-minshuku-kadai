@@ -29,7 +29,7 @@ public class Review {
 	@Column(name = "explanation")
 	private String explanation;
 	
-	@Column(name = "user_id", insertable = false, updatable = false)
+	@Column(name = "user_id", updatable = false)
     private Integer userId;
 	
 	@Column(name = "house_id")

@@ -26,7 +26,6 @@ public class ReviewService {
 		Review review = new Review();
 		User user = userDetailsImpl.getUser();
 		
-		
 		review.setName(user.getName());
 		review.setStar(reviewRegisterForm.getStar());
 		review.setExplanation(reviewRegisterForm.getExplanation());
@@ -37,13 +36,15 @@ public class ReviewService {
 	}
 	
 	@Transactional
-	public void update(ReviewEditForm reviewEditForm,  @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+	public void update(Integer id,ReviewEditForm reviewEditForm,  @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		Review review = reviewRepository.getReferenceById(reviewEditForm.getId());
 		User user = userDetailsImpl.getUser();
-				
-		review.setName(userDetailsImpl.getUsername());
+		
+		review.setName(user.getName());
 		review.setStar(reviewEditForm.getStar());
 		review.setExplanation(reviewEditForm.getExplanation());
+		review.setHouseId(id);
+		review.setUserId(user.getId());
 		
 		reviewRepository.save(review);
 	}

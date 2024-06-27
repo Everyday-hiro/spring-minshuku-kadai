@@ -95,16 +95,19 @@ public class ReviewController {
 	}
 	
 	@PostMapping("/{id}/update")
-	public String update(@ModelAttribute @Validated ReviewEditForm reviewEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
+	public String update(@PathVariable(name = "id") Integer id, @ModelAttribute @Validated ReviewEditForm reviewEditForm, BindingResult bindingResult, RedirectAttributes redirectAttributes, @AuthenticationPrincipal UserDetailsImpl userDetailsImpl, Model model) {
+		Review review = new Review();
+		
+		model.addAttribute("review", review);
 		if(bindingResult.hasErrors()) {
 		
 			return "review/edit";
 		}
 		
-		reviewService.update(reviewEditForm, userDetailsImpl);
+		reviewService.update(id, reviewEditForm, userDetailsImpl);
 		redirectAttributes.addFlashAttribute("successMessage", "レビューの内容を編集しました。");
 		
-		return "redirect:/templates/houses/show";
+		return "redirect:/houses/{id}";
 	}
 	
 	@PostMapping("/{id}/delete")
