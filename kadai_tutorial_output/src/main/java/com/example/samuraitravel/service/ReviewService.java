@@ -43,7 +43,6 @@ public class ReviewService {
 		review.setName(user.getName());
 		review.setStar(reviewEditForm.getStar());
 		review.setExplanation(reviewEditForm.getExplanation());
-		review.setHouseId(id);
 		review.setUserId(user.getId());
 		
 		reviewRepository.save(review);
