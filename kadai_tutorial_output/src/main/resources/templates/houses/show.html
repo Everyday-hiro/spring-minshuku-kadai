@@ -199,16 +199,15 @@
 												</div>
 																		       
 												 <!-- 削除用モーダル -->
-												 <div class="modal fade" th:id="${'deleteReviewModal' + ${review.getId(})}" tabindex="-1" role="dialog" th:aria-labelledby="${'deleteReviewModalLabel' + ${review.getId()}}" aria-hidden="true">
+												 <div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" th:aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
 													 <div class="modal-dialog" role="document">
 														 <div class="modal-content">
 															<div class="modal-header">
-																<h5 class="modal-title" th:id="${'deleteReviewModalLabel' + ${review.getId()}" th:text="${house.getName()}のレビューを削除してもよろしいですか？"></h5>
+																<h5 class="modal-title" id="deleteReviewModalLabel" th:text="${'house.getName()' + 'のレビューを削除してもよろしいですか？'}"></h5>
 																 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
 															</div>
 															 <div class="modal-footer">
 																<form method="post" th:action="@{/review/__${review.getId()}__/delete}">
-																	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
 																	 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
 																	<button type="submit" class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
 																 </form>
