@@ -122,6 +122,7 @@ public class ReviewController {
 		
 		redirectAttributes.addFlashAttribute("successMessage", "レビューを削除しました。");
 		
-		return "redirect:/houses/{id}";
+		return "redirect:/houses";
 	}
+	
 }

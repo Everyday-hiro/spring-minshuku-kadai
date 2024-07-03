@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.samuraitravel.entity.House;
 import com.example.samuraitravel.entity.Review;
+import com.example.samuraitravel.entity.User;
 import com.example.samuraitravel.form.ReservationInputForm;
 import com.example.samuraitravel.repository.HouseRepository;
 import com.example.samuraitravel.repository.ReviewRepository;
+import com.example.samuraitravel.security.UserDetailsImpl;
 
 @Controller
 @RequestMapping("/houses")
@@ -79,14 +82,18 @@ public class HouseController {
 	}
 	
 	@GetMapping("/{id}")
-	public String show(@PathVariable(name = "id") Integer id, Model model,@PageableDefault(page = 0, size = 6, sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+	public String show(@PathVariable(name = "id") Integer id, Model model,@PageableDefault(page = 0, size = 6, sort = "createdAt", direction = Direction.DESC) Pageable pageable,  @AuthenticationPrincipal UserDetailsImpl userDetailsImpl) {
 		House house = houseRepository.getReferenceById(id);
 		Page<Review> reviewPage = reviewRepository.findByHouseId(id, pageable);
+		
+		User user = userDetailsImpl.getUser();
+		boolean userHasReviews = reviewRepository.findByUserAndHouse(user, house);
 		
 		model.addAttribute("house", house);
 		model.addAttribute("reservationInputForm", new ReservationInputForm());
 		
 		model.addAttribute("reviewPage", reviewPage);
+		model.addAttribute("userHasReviews", userHasReviews);
 		
 		return "houses/show";
 	}

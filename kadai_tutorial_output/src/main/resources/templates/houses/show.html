@@ -149,9 +149,9 @@
 										<div class="review">
 											<div class="review-body">
 												<h1 class="mb-4 text-center">レビュー</h1>
-												<div class="review-create" sec:authorize="hasRole('ROLE_GENERAL')">
+												<div class="review-create" sec:authorize="isAuthenticated()" th:if="${!userHasReviews}" >
 													<div class="form-group d-flex justify-content-center my-4">
-													   <a class="btn text-white shadow-sm samuraitravel-btn" th:href="@{/review/registerform/{id}(id = ${house.id})}">
+													   <a class="btn text-white shadow-sm samuraitravel-btn" th:href="@{/review/registerform/{id}(id = ${house.id})}" th:if="${!hasUserAlreadyReviewed}">
 														 レビューを投稿する
 													   </a>
 													</div>
@@ -171,7 +171,7 @@
 															<div class="card">
 																<div class="card-body position-relative my-positioin">
 																	<h3 class="card-title mb-3" th:text="${review.getName()}"></h3>
-																	<div th:if="${#authentication.principal.user.id} == ${review.getuserId()}" class="my-edit-delete-buttons">
+																	<div th:if="${#authentication.principal.user.id} == ${review.getuserId()}" class="my-edit-delete-buttons" sec:authorize="hasRole('ROLE_GENERAL')">
 																		<a class="text-right" th:href="@{/review/__${review.getId()}__/edit}">編集</a>
 																		<a th:href="@{/review/__${review.getId()}__/delete}" class="samuraitravel-link-danger" data-bs-toggle="modal" th:data-bs-target="${'#deleteReviewModal' + review.getId()}">削除</a>
 																	</div>
@@ -189,6 +189,27 @@
 																		<h6 class="card-text mb-3" th:text="${review.getExplanation()}"></h6>
 																	</p>
 																</div>
+																
+																<!-- 削除用モーダル -->
+																 <div class="modal fade" th:id="'deleteReviewModal' + ${review.getId()}" tabindex="-1" role="dialog" th:aria-labelledby="'deleteReviewModalLabel' + ${review.getId()}" aria-hidden="true">
+																	<div class="modal-dialog" role="document">
+																		 <div class="modal-content">
+																			<div class="modal-header">
+																				<h5 class="modal-title" th:id="'deleteReviewModalLabel' + ${review.getId()}" th:text="${house.getName() + 'のレビューを削除してもよろしいですか？'}"></h5>
+																				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
+																			</div>
+																			<div class="modal-body">
+																				<p>ほんとに削除してもよろしいですか？</p>
+																			</div>
+																		    <div class="modal-footer">
+																			    <form method="post" th:action="@{/review/__${review.getId()}__/delete}">
+																				    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+																				    <button type="submit" class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
+																			    </form>
+																		    </div>
+																		</div>
+																	 </div>
+																 </div>
 															</div>
 														</div>
 													</div>
@@ -197,24 +218,6 @@
 												<div th:if="${reviewPage.getTotalElements() > 6}">
 													<a th:href="@{/review/{houseId}(houseId=${house.id})}" class="d-flex justify-content-center">全てのレビューを見る</a>
 												</div>
-																		       
-												 <!-- 削除用モーダル -->
-												 <div class="modal fade" id="deleteReviewModal" tabindex="-1" role="dialog" th:aria-labelledby="deleteReviewModalLabel" aria-hidden="true">
-													 <div class="modal-dialog" role="document">
-														 <div class="modal-content">
-															<div class="modal-header">
-																<h5 class="modal-title" id="deleteReviewModalLabel" th:text="${'house.getName()' + 'のレビューを削除してもよろしいですか？'}"></h5>
-																 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="閉じる"></button>
-															</div>
-															 <div class="modal-footer">
-																<form method="post" th:action="@{/review/__${review.getId()}__/delete}">
-																	 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
-																	<button type="submit" class="btn samuraitravel-btn-danger text-white shadow-sm">削除</button>
-																 </form>
-															 </div>
-														 </div>
-													 </div>
-												  </div>
 											  </div>
 											</div>
 										</div>
@@ -223,8 +226,7 @@
                              </div>
                          </div>
                      </div>
-                 </div>
-             </main>
+                 </main>
              
              <!-- フッター -->
            <div th:replace="~{fragment :: footer}"></div>

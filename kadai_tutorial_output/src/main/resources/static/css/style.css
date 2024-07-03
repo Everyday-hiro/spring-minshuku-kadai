@@ -136,6 +136,10 @@ footer {
     right: 10px;
 }
 
+.review-star{
+	color: #FFD700;
+}
+
 @media screen and (min-width: 1400px) {
 	.samuraitravel-container {
 		max-width: 1200px;
